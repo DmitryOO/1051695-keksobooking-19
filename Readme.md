@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дмитрий Кутузов](https://up.htmlacademy.ru/javascript/19/user/1051695).
-* Наставник: `Неизвестно`.
+* Наставник: Евгений Казаков.
 
 ---
 
