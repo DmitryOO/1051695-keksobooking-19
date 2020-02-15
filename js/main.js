@@ -1,16 +1,17 @@
 'use strict';
-var maxPrice = 1000000;
-var typeNumber = 4;
-var maxRooms = 100;
-var maxGuests = 100;
-var checkNumber = 3;
-var featuresNumber = 6;
-var photosNumber = 3;
-var maxLocationX = 1200;
-var maxLocationY = 630;
-var minLocationY = 130;
+var MAX_PRICE = 1000000;
+var TYPE_NUMBER = 4;
+var MAX_ROOMS = 100;
+var MAX_GUESTS = 100;
+var CHECK_NUMBER = 3;
+var FEATURES_NUMBER = 6;
+var PHOTOS_NUMBER = 3;
+var MAX_LOCATION_X = 1200;
+var MAX_LOCATION_Y = 630;
+var MIN_LOCATION_Y = 130;
 var objectsNumber = 8;
-var massive = [];
+var DELTA_LOCATION_X = -25;
+var DELTA_LOCATION_Y = 50;
 var author = {};
 
 var randomize = function (x) {
@@ -18,12 +19,12 @@ var randomize = function (x) {
 };
 
 var createPrice = function () {
-  var randomPrice = randomize(maxPrice);
+  var randomPrice = randomize(MAX_PRICE);
   author.offer.price = randomPrice;
 };
 
 var createType = function () {
-  var randomType = randomize(typeNumber);
+  var randomType = randomize(TYPE_NUMBER);
 
   if (randomType === 1) {
     author.offer.type = 'palace';
@@ -40,19 +41,19 @@ var createType = function () {
 };
 
 var createRooms = function () {
-  var randomRooms = randomize(maxRooms);
+  var randomRooms = randomize(MAX_ROOMS);
 
   author.offer.rooms = randomRooms;
 };
 
 var createGuests = function () {
-  var randomGuests = randomize(maxGuests);
+  var randomGuests = randomize(MAX_GUESTS);
 
   author.offer.guests = randomGuests;
 };
 
 var createCheck = function () {
-  var randomCheck = randomize(checkNumber);
+  var randomCheck = randomize(CHECK_NUMBER);
 
   if (randomCheck === 1) {
     author.offer.checkin = '12:00';
@@ -64,7 +65,7 @@ var createCheck = function () {
     author.offer.checkin = '14:00';
   }
 
-  randomCheck = randomize(checkNumber);
+  randomCheck = randomize(CHECK_NUMBER);
 
   if (randomCheck === 1) {
     author.offer.checkout = '12:00';
@@ -78,7 +79,7 @@ var createCheck = function () {
 };
 
 var createFeatures = function () {
-  for (var i = 0; i < featuresNumber; i++) {
+  for (var i = 0; i < FEATURES_NUMBER; i++) {
     if (Math.random() < 0.5) {
       author.offer.features.splice(0, 1);
     }
@@ -86,7 +87,7 @@ var createFeatures = function () {
 };
 
 var createPhotos = function () {
-  for (var i = 0; i < photosNumber; i++) {
+  for (var i = 0; i < PHOTOS_NUMBER; i++) {
     if (Math.random() < 0.5) {
       author.offer.photos.splice(0, 1);
     }
@@ -94,12 +95,12 @@ var createPhotos = function () {
 };
 
 var createLocation = function () {
-  author.location.x = randomize(maxLocationX);
-  author.location.y = randomize(maxLocationY - minLocationY) + minLocationY;
-  author.offer.address = (author.location.x).toString(10) + ', ' + (author.location.y).toString(10);
+  author.location.x = randomize(MAX_LOCATION_X);
+  author.location.y = randomize(MAX_LOCATION_Y - MIN_LOCATION_Y) + MIN_LOCATION_Y;
+  author.offer.address = author.location.x + ', ' + author.location.y;
 };
 
-var createObject = function () {
+var createOffer = function () {
   author = {
     avatar: 'img/avatars/user{{xx}}.png',
     offer: {
@@ -131,32 +132,36 @@ var createObject = function () {
   return author;
 };
 
-var createMassive = function () {
+var createOfferList = function () {
+  var localOffers = [];
+
   for (var i = 0; i < objectsNumber; i++) {
-    massive[i] = createObject();
-    author.avatar = 'img/avatars/user0' + (i + 1) + '.png';
+    localOffers[i] = createOffer();
+    localOffers[i].avatar = 'img/avatars/user0' + (i + 1) + '.png';
   }
-  return massive;
+  return localOffers;
 };
 
-createMassive();
-
+var offerList = createOfferList();
 
 document.querySelector('.map--faded').classList.remove('map--faded');
 
-var mapPins = document.querySelector('.map__pins');
-var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < objectsNumber; i++) {
-  var pin = pinTemplate.cloneNode(true);
-  var pinImage = pin.querySelector('img');
-  pinImage.src = massive[i].avatar;
-  pinImage.alt = massive[i].offer.title;
-  pin.style.left = massive[i].location.x - 25 + 'px';
-  pin.style.top = massive[i].location.y + 50 + 'px';
-  fragment.appendChild(pin);
-}
-mapPins.appendChild(fragment);
-// <template id="pin">
-// <button type="button" class="map__pin" style="left: 200px; top: 400px;"><img src="img/avatars/user07.png" width="40" height="40" draggable="false" alt="Метка объявления"></button>
-// </template>
+var addPins = function () {
+  var mapPins = document.querySelector('.map__pins');
+  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < objectsNumber; i++) {
+    var pin = pinTemplate.cloneNode(true);
+    var pinImage = pin.querySelector('img');
+
+    pinImage.src = offerList[i].avatar;
+    pinImage.alt = offerList[i].offer.title;
+    pin.style.left = offerList[i].location.x + DELTA_LOCATION_X + 'px';
+    pin.style.top = offerList[i].location.y + DELTA_LOCATION_Y + 'px';
+    fragment.appendChild(pin);
+  }
+  mapPins.appendChild(fragment);
+};
+
+addPins();
