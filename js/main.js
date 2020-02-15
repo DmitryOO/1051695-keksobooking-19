@@ -9,7 +9,7 @@ var PHOTOS_NUMBER = 3;
 var MAX_LOCATION_X = 1200;
 var MAX_LOCATION_Y = 630;
 var MIN_LOCATION_Y = 130;
-var objectsNumber = 8;
+var OBJECTS_NUMBER = 8;
 var DELTA_LOCATION_X = -25;
 var DELTA_LOCATION_Y = 50;
 var author = {};
@@ -135,7 +135,7 @@ var createOffer = function () {
 var createOfferList = function () {
   var localOffers = [];
 
-  for (var i = 0; i < objectsNumber; i++) {
+  for (var i = 0; i < OBJECTS_NUMBER; i++) {
     localOffers[i] = createOffer();
     localOffers[i].avatar = 'img/avatars/user0' + (i + 1) + '.png';
   }
@@ -151,7 +151,7 @@ var addPins = function () {
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < objectsNumber; i++) {
+  for (var i = 0; i < OBJECTS_NUMBER; i++) {
     var pin = pinTemplate.cloneNode(true);
     var pinImage = pin.querySelector('img');
 
