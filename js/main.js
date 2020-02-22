@@ -9,7 +9,7 @@ var PHOTOS_NUMBER = 3;
 var MAX_LOCATION_X = 1200;
 var MAX_LOCATION_Y = 630;
 var MIN_LOCATION_Y = 130;
-var OBJECTS_NUMBER = 8;
+var OFFERS_NUMBER = 8;
 var DELTA_LOCATION_X = -25;
 var DELTA_LOCATION_Y = 50;
 var author = {};
@@ -135,7 +135,7 @@ var createOffer = function () {
 var createOfferList = function () {
   var localOffers = [];
 
-  for (var i = 0; i < OBJECTS_NUMBER; i++) {
+  for (var i = 0; i < OFFERS_NUMBER; i++) {
     localOffers[i] = createOffer();
     localOffers[i].avatar = 'img/avatars/user0' + (i + 1) + '.png';
   }
@@ -151,7 +151,7 @@ var addPins = function () {
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < OBJECTS_NUMBER; i++) {
+  for (var i = 0; i < OFFERS_NUMBER; i++) {
     var pin = pinTemplate.cloneNode(true);
     var pinImage = pin.querySelector('img');
 
@@ -165,3 +165,105 @@ var addPins = function () {
 };
 
 addPins();
+
+
+var createCard = function () {
+  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  var card = cardTemplate.cloneNode(true);
+  card.querySelector('.popup__title').textContent = offerList[0].offer.title;
+  card.querySelector('.popup__text--address').textContent = offerList[0].offer.address;
+  card.querySelector('.popup__text--price').textContent = offerList[0].offer.price + '₽/ночь';
+
+  var translations = {
+    flat: 'Квартира',
+    bungalo: 'Бунгало',
+    house: 'Дом',
+    palace: 'Дворец'
+  };
+
+  var translateType = function (offer) {
+    return translations[offer.type];
+  };
+
+  card.querySelector('.popup__type').textContent = translateType(offerList[0].offer);
+  card.querySelector('.popup__text--capacity').innerHTML = offerList[0].offer.rooms + ' комнаты для ' + offerList[0].offer.guests + ' гостей';
+  card.querySelector('.popup__text--time').innerHTML = 'Заезд после' + offerList[0].offer.checkin + ', выезд до ' + offerList[0].offer.checkout;
+
+  var featuresList = card.querySelectorAll('.popup__feature');
+  for (var i = 0; i < featuresList.length; i++) {
+    featuresList[i].classList.remove('popup__feature');
+    featuresList[i].classList.add('hidden');
+  }
+
+  for (var j = 0; j < offerList[0].offer.features.length; j++) {
+    if (offerList[0].offer.features[j] === 'wifi') {
+      card.querySelector('.popup__feature--wifi').classList.add('popup__feature');
+      card.querySelector('.popup__feature--wifi').classList.remove('hidden');
+    }
+    if (offerList[0].offer.features[j] === 'dishwasher') {
+      card.querySelector('.popup__feature--dishwasher').classList.add('popup__feature');
+      card.querySelector('.popup__feature--dishwasher').classList.remove('hidden');
+    }
+    if (offerList[0].offer.features[j] === 'parking') {
+      card.querySelector('.popup__feature--parking').classList.add('popup__feature');
+      card.querySelector('.popup__feature--parking').classList.remove('hidden');
+    }
+    if (offerList[0].offer.features[j] === 'washer') {
+      card.querySelector('.popup__feature--washer').classList.add('popup__feature');
+      card.querySelector('.popup__feature--washer').classList.remove('hidden');
+    }
+    if (offerList[0].offer.features[j] === 'elevator') {
+      card.querySelector('.popup__feature--elevator').classList.add('popup__feature');
+      card.querySelector('.popup__feature--elevator').classList.remove('hidden');
+    }
+    if (offerList[0].offer.features[j] === 'conditioner') {
+      card.querySelector('.popup__feature--conditioner').classList.add('popup__feature');
+      card.querySelector('.popup__feature--conditioner').classList.remove('hidden');
+    }
+  }
+
+  card.querySelector('.popup__description').textContent = offerList[0].offer.description;
+
+  var newPhoto = [];
+  newPhoto[0] = card.querySelector('.popup__photo').cloneNode(true);
+  if (offerList[0].offer.photos.length === 0) {
+    card.querySelector('.popup__photo').style.display = 'none';
+  } else {
+    card.querySelector('.popup__photo:nth-child(1)').src = offerList[0].offer.photos[0];
+    for (var k = 1; k < offerList[0].offer.photos.length; k++) {
+      newPhoto[k] = card.querySelector('.popup__photo').cloneNode(true);
+      card.querySelector('.popup__photos').appendChild(newPhoto[k]);
+      newPhoto[k].src = offerList[0].offer.photos[k];
+    }
+  }
+
+  card.querySelector('.popup__avatar').src = offerList[0].avatar;
+
+  document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', card);
+};
+createCard();
+
+/* <template id="card">
+<article class="map__card popup">
+  <img src="img/avatars/user01.png" class="popup__avatar" width="70" height="70" alt="Аватар пользователя">
+  <button type="button" class="popup__close">Закрыть</button>
+  <h3 class="popup__title">Уютное гнездышко для молодоженов</h3>
+  <p class="popup__text popup__text--address">102-0082 Tōkyō-to, Chiyoda-ku, Ichibanchō, 14−3</p>
+  <p class="popup__text popup__text--price">5200&#x20bd;<span>/ночь</span></p>
+  <h4 class="popup__type">Квартира</h4>
+  <p class="popup__text popup__text--capacity">2 комнаты для 3 гостей</p>
+  <p class="popup__text popup__text--time">Заезд после 14:00, выезд до 10:00</p>
+  <ul class="popup__features">
+    <li class="popup__feature popup__feature--wifi"></li>
+    <li class="popup__feature popup__feature--dishwasher"></li>
+    <li class="popup__feature popup__feature--parking"></li>
+    <li class="popup__feature popup__feature--washer"></li>
+    <li class="popup__feature popup__feature--elevator"></li>
+    <li class="popup__feature popup__feature--conditioner"></li>
+  </ul>
+  <p class="popup__description">Великолепная квартира-студия в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и недавно отремонтирована.</p>
+  <div class="popup__photos">
+    <img src="" class="popup__photo" width="45" height="40" alt="Фотография жилья">
+  </div>
+</article>
+</template>*/
