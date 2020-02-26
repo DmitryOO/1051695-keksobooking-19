@@ -293,19 +293,19 @@ mapPinMain.addEventListener('keydown', function (evt) {
     makeAvailable();
   }
 });
-// var capacity = document.querySelector('#capacity');
-// var roomNumber = document.querySelector('#room_number');
-// var validateCapacity = function () {
+var capacity = document.querySelector('#capacity');
+var roomNumber = document.querySelector('#room_number');
 
-// //   capacity.querySelector('option:nth-child(1)').removeAttribute('selected');
-// //   capacity.querySelector('option:nth-child(3)').setAttribute('selected', 'selected');
-// //   if (roomNumber.querySelector('option:nth-child(1)').selected) {
-// //     capacity.querySelector('option:nth-child(1)').setAttribute('disabled', 'disabled');
-// //     capacity.querySelector('option:nth-child(2)').setAttribute('disabled', 'disabled');
-// //     capacity.querySelector('option:nth-child(4)').setAttribute('disabled', 'disabled');
-// //   }
+var validateRoomAndCapacity = function (evt) {
+  if (roomNumber.value / 1 < capacity.value || (roomNumber.value === '100' && capacity.value !== '0') || (roomNumber.value !== '100' && capacity.value === '0')) {
+    // console.log(roomNumber.value + '<' + capacity.value);
+    evt.target.setCustomValidity('Ошибка');
+  } else {
+    evt.target.setCustomValidity('');
+  }
+};
 
-// // };
-// // validateCapacity();
-// // capacity.querySelector('option:nth-child(1)').setAttribute('selected', 'selected');
-// // roomNumber.querySelector('option:nth-child(1)').removeAttribute('selected');
+
+capacity.addEventListener('change', validateRoomAndCapacity);
+roomNumber.addEventListener('change', validateRoomAndCapacity);
+
