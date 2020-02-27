@@ -247,7 +247,6 @@ var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
 var mapFiltersSelects = document.querySelectorAll('.map__filters select');
 var mapPinMain = document.querySelector('.map__pin--main');
 
-
 var makeAvailable = function () {
   addPins();
   for (var i = 0; i < adFormFieldsets.length; i++) {
@@ -293,19 +292,28 @@ mapPinMain.addEventListener('keydown', function (evt) {
     makeAvailable();
   }
 });
+
+
 var capacity = document.querySelector('#capacity');
 var roomNumber = document.querySelector('#room_number');
+var submitButton = document.querySelector('.ad-form__submit');
 
-var validateRoomAndCapacity = function (evt) {
-  if (roomNumber.value / 1 < capacity.value || (roomNumber.value === '100' && capacity.value !== '0') || (roomNumber.value !== '100' && capacity.value === '0')) {
-    // console.log(roomNumber.value + '<' + capacity.value);
-    evt.target.setCustomValidity('Ошибка');
+var validateRoomAndCapacity = function () {
+  var roomNumberVal = parseInt(roomNumber.value, 10);
+  var capacityVal = parseInt(capacity.value, 10);
+  if (roomNumberVal < capacityVal || (roomNumberVal === 100 && capacityVal !== 0) || (roomNumberVal !== 100 && capacityVal === 0)) {
+    capacity.setCustomValidity('Ошибка. Доступны варианты: 1 комната — «для 1 гостя», 2 комнаты — «для 2 гостей» или «для 1 гостя», 3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя», 100 комнат — «не для гостей».');
   } else {
-    evt.target.setCustomValidity('');
+    capacity.setCustomValidity('');
   }
 };
 
 
-capacity.addEventListener('change', validateRoomAndCapacity);
-roomNumber.addEventListener('change', validateRoomAndCapacity);
-
+submitButton.addEventListener('click', function () {
+  validateRoomAndCapacity();
+});
+submitButton.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_BUTTON) {
+    validateRoomAndCapacity();
+  }
+});
