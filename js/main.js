@@ -462,9 +462,6 @@ var showCards = function () {
       onCardOpen(7);
     }
   });
-
-  console.dir(mapPinCollection);
-  console.dir(mapCards);
 };
 
 
