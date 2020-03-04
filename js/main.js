@@ -154,6 +154,7 @@ var addPins = function () {
     var pin = pinTemplate.cloneNode(true);
     var pinImage = pin.querySelector('img');
 
+    pin.dataset.cardId = i;
     pinImage.src = offerList[i].avatar;
     pinImage.alt = offerList[i].offer.title;
     pin.style.left = offerList[i].location.x + DELTA_LOCATION_X + 'px';
@@ -286,14 +287,14 @@ mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === LEFT_MOUSE_BUTTON && document.querySelector('.map--faded') !== null) {
     showAdress();
     makeAvailable();
-    showCards();
+    // showCards();
   }
 });
 mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === ENTER_BUTTON && document.querySelector('.map--faded') !== null) {
     showAdress();
     makeAvailable();
-    showCards();
+    // showCards();
   }
 });
 
@@ -378,90 +379,33 @@ var createCards = function () {
   }
 };
 createCards();
-var showCards = function () {
-  var mapCards = document.querySelectorAll('.map__card');
-  var mapPinCollection = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+// var showCards = function () {
+var mapCards = document.querySelectorAll('.map__card');
+//   var mapPinCollection = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-  var onCardOpen = function (cardNumber) {
-    for (var i = 0; i < mapCards.length; i++) {
-      mapCards[i].style.display = 'none';
-    }
-    mapCards[cardNumber].style.display = 'block';
-    var closeButton = mapCards[cardNumber].querySelector('.popup__close');
-    closeButton.addEventListener('click', function () {
+var cardOpen = function (cardNumber) {
+  for (var i = 0; i < mapCards.length; i++) {
+    mapCards[i].style.display = 'none';
+  }
+  mapCards[cardNumber].style.display = 'block';
+  var closeButton = mapCards[cardNumber].querySelector('.popup__close');
+  closeButton.addEventListener('click', function () {
+    mapCards[cardNumber].style.display = 'none';
+  });
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === ESCAPE_BUTTON) {
       mapCards[cardNumber].style.display = 'none';
-    });
-    document.addEventListener('keydown', function (evt) {
-      if (evt.key === ESCAPE_BUTTON) {
-        mapCards[cardNumber].style.display = 'none';
-      }
-    });
-  };
-
-  mapPinCollection[0].addEventListener('click', function () {
-    onCardOpen(0);
-  });
-  mapPinCollection[0].addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_BUTTON) {
-      onCardOpen(0);
-    }
-  });
-  mapPinCollection[1].addEventListener('click', function () {
-    onCardOpen(1);
-  });
-  mapPinCollection[1].addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_BUTTON) {
-      onCardOpen(1);
-    }
-  });
-  mapPinCollection[2].addEventListener('click', function () {
-    onCardOpen(2);
-  });
-  mapPinCollection[2].addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_BUTTON) {
-      onCardOpen(2);
-    }
-  });
-  mapPinCollection[3].addEventListener('click', function () {
-    onCardOpen(3);
-  });
-  mapPinCollection[3].addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_BUTTON) {
-      onCardOpen(3);
-    }
-  });
-  mapPinCollection[4].addEventListener('click', function () {
-    onCardOpen(4);
-  });
-  mapPinCollection[4].addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_BUTTON) {
-      onCardOpen(4);
-    }
-  });
-  mapPinCollection[5].addEventListener('click', function () {
-    onCardOpen(5);
-  });
-  mapPinCollection[5].addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_BUTTON) {
-      onCardOpen(5);
-    }
-  });
-  mapPinCollection[6].addEventListener('click', function () {
-    onCardOpen(6);
-  });
-  mapPinCollection[6].addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_BUTTON) {
-      onCardOpen(6);
-    }
-  });
-  mapPinCollection[7].addEventListener('click', function () {
-    onCardOpen(7);
-  });
-  mapPinCollection[7].addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_BUTTON) {
-      onCardOpen(7);
     }
   });
 };
 
 
+var mapPins = document.querySelector('.map__pins');
+
+mapPins.addEventListener('click', function (evt) {
+  var target = evt.target;
+  if (target.type === 'button' || target.parentNode.type === 'button') {
+    var button = target.type === 'button' ? target : target.parentNode;
+    cardOpen(button.dataset.cardId);
+  }
+});
