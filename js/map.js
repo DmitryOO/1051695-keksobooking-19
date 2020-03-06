@@ -89,4 +89,6 @@
       cardOpen(button.dataset.cardId);
     }
   });
+  window.mapPinMain = mapPinMain;
+  window.showAdress = showAdress;
 })();

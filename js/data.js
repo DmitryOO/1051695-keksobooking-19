@@ -8,7 +8,7 @@
   var CHECK_NUMBER = 3;
   var FEATURES_NUMBER = 6;
   var PHOTOS_NUMBER = 3;
-  var MAX_LOCATION_X = 1200;
+  var MAX_LOCATION_X = document.querySelector('.map__overlay').offsetWidth;
   var MAX_LOCATION_Y = 630;
   var MIN_LOCATION_Y = 130;
   var OFFERS_NUMBER = 8;
@@ -151,4 +151,7 @@
   window.ESCAPE_BUTTON = ESCAPE_BUTTON;
   window.ENTER_BUTTON = ENTER_BUTTON;
   window.LEFT_MOUSE_BUTTON = LEFT_MOUSE_BUTTON;
+  window.MAX_LOCATION_X = MAX_LOCATION_X;
+  window.MAX_LOCATION_Y = MAX_LOCATION_Y;
+  window.MIN_LOCATION_Y = MIN_LOCATION_Y;
 })();
