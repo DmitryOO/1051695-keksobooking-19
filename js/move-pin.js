@@ -2,7 +2,7 @@
 
 (function () {
   var PIN_MAIN_HALF_WIDTH = 30;
-  window.mapPinMain.addEventListener('mousedown', function (evt) {
+  window.map.mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -20,24 +20,20 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-      window.showAdress();
-      window.mapPinMain.style.top = (window.mapPinMain.offsetTop - shift.y) + 'px';
-      window.mapPinMain.style.left = (window.mapPinMain.offsetLeft - shift.x) + 'px';
-      if (window.mapPinMain.offsetTop < window.MIN_LOCATION_Y && shift.y > 0) {
-        window.mapPinMain.style.top = window.MIN_LOCATION_Y + 'px';
-        document.removeEventListener('mousemove', onMouseMove);
+      window.map.showAdress();
+      window.map.mapPinMain.style.top = (window.map.mapPinMain.offsetTop - shift.y) + 'px';
+      window.map.mapPinMain.style.left = (window.map.mapPinMain.offsetLeft - shift.x) + 'px';
+      if (window.map.mapPinMain.offsetTop < window.MIN_LOCATION_Y && shift.y > 0) {
+        window.map.mapPinMain.style.top = window.MIN_LOCATION_Y + 'px';
       }
-      if (window.mapPinMain.offsetTop > window.MAX_LOCATION_Y && shift.y < 0) {
-        window.mapPinMain.style.top = window.MAX_LOCATION_Y + 'px';
-        document.removeEventListener('mousemove', onMouseMove);
+      if (window.map.mapPinMain.offsetTop > window.MAX_LOCATION_Y && shift.y < 0) {
+        window.map.mapPinMain.style.top = window.MAX_LOCATION_Y + 'px';
       }
-      if ((window.mapPinMain.offsetLeft + PIN_MAIN_HALF_WIDTH) < 0 && shift.x > 0) {
-        window.mapPinMain.style.left = -PIN_MAIN_HALF_WIDTH + 'px';
-        document.removeEventListener('mousemove', onMouseMove);
+      if ((window.map.mapPinMain.offsetLeft + PIN_MAIN_HALF_WIDTH) < 0 && shift.x > 0) {
+        window.map.mapPinMain.style.left = -PIN_MAIN_HALF_WIDTH + 'px';
       }
-      if ((window.mapPinMain.offsetLeft + PIN_MAIN_HALF_WIDTH) > window.MAX_LOCATION_X && shift.x < 0) {
-        window.mapPinMain.style.left = (window.MAX_LOCATION_X - PIN_MAIN_HALF_WIDTH) + 'px';
-        document.removeEventListener('mousemove', onMouseMove);
+      if ((window.map.mapPinMain.offsetLeft + PIN_MAIN_HALF_WIDTH) > window.MAX_LOCATION_X && shift.x < 0) {
+        window.map.mapPinMain.style.left = (window.MAX_LOCATION_X - PIN_MAIN_HALF_WIDTH) + 'px';
       }
     };
     var onMouseUp = function (upEvt) {

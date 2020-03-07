@@ -8,7 +8,7 @@
   var CHECK_NUMBER = 3;
   var FEATURES_NUMBER = 6;
   var PHOTOS_NUMBER = 3;
-  var MAX_LOCATION_X = document.querySelector('.map__overlay').offsetWidth;
+  var MAX_LOCATION_X = 1197;
   var MAX_LOCATION_Y = 630;
   var MIN_LOCATION_Y = 130;
   var OFFERS_NUMBER = 8;
