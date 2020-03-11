@@ -55,7 +55,7 @@
   });
   var createCards = function () {
     var cards = [];
-    for (var i = 0; i < window.OFFERS_NUMBER; i++) {
+    for (var i = 0; i < window.offerList.length; i++) {
       cards [i] = window.createCard(i);
     }
   };

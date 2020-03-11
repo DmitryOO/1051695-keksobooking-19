@@ -8,7 +8,7 @@
     var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < window.OFFERS_NUMBER; i++) {
+    for (var i = 0; i < window.offerList.length; i++) {
       var pin = pinTemplate.cloneNode(true);
       var pinImage = pin.querySelector('img');
 

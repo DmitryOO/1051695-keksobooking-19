@@ -147,7 +147,7 @@
 
   // var offerList = createOfferList();
   // window.offerList = offerList;
-  // window.OFFERS_NUMBER = OFFERS_NUMBER;
+  // window.offerList.length = OFFERS_NUMBER;
   window.ESCAPE_BUTTON = ESCAPE_BUTTON;
   window.ENTER_BUTTON = ENTER_BUTTON;
   window.LEFT_MOUSE_BUTTON = LEFT_MOUSE_BUTTON;

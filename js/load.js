@@ -6,9 +6,8 @@
   xhr.addEventListener('load', function () {
 
     var offerList = xhr.response;
-    var OFFERS_NUMBER = offerList.length;
     window.offerList = offerList;
-    window.OFFERS_NUMBER = OFFERS_NUMBER;
+    window.offerList.length = offerList.length;
   });
   xhr.open('GEt', 'https://js.dump.academy/keksobooking/data');
   xhr.send();
