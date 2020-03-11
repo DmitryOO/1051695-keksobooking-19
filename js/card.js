@@ -71,7 +71,7 @@
       }
     }
 
-    card.querySelector('.popup__avatar').src = window.offerList[m].avatar;
+    card.querySelector('.popup__avatar').src = window.offerList[m].author.avatar;
     card.style.display = 'none';
 
     document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', card);

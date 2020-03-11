@@ -55,15 +55,16 @@
   });
   var createCards = function () {
     var cards = [];
-    for (var i = 0; i < window.OFFERS_NUMBER; i++) {
+    for (var i = 0; i < window.offerList.length; i++) {
       cards [i] = window.createCard(i);
     }
   };
-  createCards();
 
-  var mapCards = document.querySelectorAll('.map__card');
 
   var cardOpen = function (cardNumber) {
+    createCards();
+
+    var mapCards = document.querySelectorAll('.map__card');
     for (var i = 0; i < mapCards.length; i++) {
       mapCards[i].style.display = 'none';
     }
