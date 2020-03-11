@@ -13,7 +13,7 @@
       var pinImage = pin.querySelector('img');
 
       pin.dataset.cardId = i;
-      pinImage.src = window.offerList[i].avatar;
+      pinImage.src = window.offerList[i].author.avatar;
       pinImage.alt = window.offerList[i].offer.title;
       pin.style.left = window.offerList[i].location.x + DELTA_LOCATION_X + 'px';
       pin.style.top = window.offerList[i].location.y + DELTA_LOCATION_Y + 'px';
