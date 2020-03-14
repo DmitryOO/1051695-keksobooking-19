@@ -1,0 +1,18 @@
+'use strict';
+
+(function () {
+
+  var MAX_LOCATION_X = 1197;
+  var MAX_LOCATION_Y = 630;
+  var MIN_LOCATION_Y = 130;
+  var ENTER_BUTTON = 'Enter';
+  var ESCAPE_BUTTON = 'Escape';
+  var LEFT_MOUSE_BUTTON = 0;
+
+  window.ESCAPE_BUTTON = ESCAPE_BUTTON;
+  window.ENTER_BUTTON = ENTER_BUTTON;
+  window.LEFT_MOUSE_BUTTON = LEFT_MOUSE_BUTTON;
+  window.MAX_LOCATION_X = MAX_LOCATION_X;
+  window.MAX_LOCATION_Y = MAX_LOCATION_Y;
+  window.MIN_LOCATION_Y = MIN_LOCATION_Y;
+})();

@@ -78,12 +78,13 @@
     var pins = document.querySelectorAll('.map__pin');
     var cards = document.querySelectorAll('.map__card');
     for (var i = 1; i < pins.length; i++) {
-      pins[i].style.display = 'none';
+      pins[i].remove();
     }
     for (var j = 1; j < cards.length; j++) {
-      cards[j].style.display = 'none';
+      cards[j].remove();
     }
     form.reset();
+    form.classList.add('ad-form--disabled');
     document.querySelector('.map').classList.add('map--faded');
     window.map.mapPinMain.style.left = '570px';
     window.map.mapPinMain.style.top = '375px';
@@ -95,37 +96,53 @@
     var successTemplate = document.querySelector('#success').content.querySelector('.success');
     var successMessage = successTemplate.cloneNode(true);
 
-    document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', successMessage);
     resetMapAndForm();
     document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', successMessage);
-    document.addEventListener('click', function () {
+    var hideSuccessMessage = function () {
       successMessage.remove();
-    });
-    document.addEventListener('keydown', function (evtKey) {
+      document.removeEventListener('click', hideSuccessMessage);
+      document.removeEventListener('keydown', hideSuccessMessageKeyDown);
+    };
+    var hideSuccessMessageKeyDown = function (evtKey) {
       if (evtKey.key === window.ESCAPE_BUTTON) {
-        successMessage.remove();
+        hideSuccessMessage();
       }
-    });
+    };
+    document.addEventListener('click', hideSuccessMessage);
+    document.addEventListener('keydown', hideSuccessMessageKeyDown);
   };
 
   var onError = function () {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var errorMessage = errorTemplate.cloneNode(true);
     document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', errorMessage);
-    document.addEventListener('click', function () {
+    var hideErrorMessage = function () {
       errorMessage.remove();
-    });
-    document.addEventListener('keydown', function (evtKey) {
+      document.removeEventListener('click', hideErrorMessage);
+      document.removeEventListener('keydown', hideErrorMessageKeyDown);
+    };
+    var hideErrorMessageKeyDown = function (evtKey) {
       if (evtKey.key === window.ESCAPE_BUTTON) {
-        errorMessage.remove();
+        hideErrorMessage();
       }
-    });
+    };
+    document.addEventListener('click', hideErrorMessage);
+    document.addEventListener('keydown', hideErrorMessageKeyDown);
+  };
+
+  var removeCards = function () {
+    var cards = document.querySelectorAll('.map__card');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].remove();
+    }
   };
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
+    removeCards();
     window.upload(new FormData(form), onSuccess, onError);
   });
   document.querySelector('.ad-form__reset').addEventListener('click', function () {
+    removeCards();
     resetMapAndForm();
   });
 })();
