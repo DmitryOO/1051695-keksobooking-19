@@ -92,7 +92,6 @@
   };
 
   var onSuccess = function () {
-    window.map.showAdress();
     var successTemplate = document.querySelector('#success').content.querySelector('.success');
     var successMessage = successTemplate.cloneNode(true);
 
