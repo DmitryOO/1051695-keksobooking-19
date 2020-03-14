@@ -92,6 +92,8 @@
   });
   window.map = {
     mapPinMain: mapPinMain,
-    showAdress: showAdress
+    showAdress: showAdress,
+    disableElements: disableElements,
+    showAdressMapFaded: showAdressMapFaded
   };
 })();

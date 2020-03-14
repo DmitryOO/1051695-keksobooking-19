@@ -9,6 +9,6 @@
     window.offerList = offerList;
     window.offerList.length = offerList.length;
   });
-  xhr.open('GEt', 'https://js.dump.academy/keksobooking/data');
+  xhr.open('GET', 'https://js.dump.academy/keksobooking/data');
   xhr.send();
 })();

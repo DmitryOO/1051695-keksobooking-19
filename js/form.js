@@ -8,6 +8,7 @@
   var timein = document.querySelector('#timein');
   var timeout = document.querySelector('#timeout');
   var submitButton = document.querySelector('.ad-form__submit');
+  var form = document.querySelector('.ad-form');
 
   var validateRoomAndCapacity = function () {
     var roomNumberVal = parseInt(roomNumber.value, 10);
@@ -71,5 +72,53 @@
       validateRoomAndCapacity();
       validateTypeAndPrice();
     }
+  });
+  var onSuccess = function () {
+    window.map.showAdress();
+    document.querySelector('.map').classList.add('map--faded');
+    var pins = document.querySelectorAll('.map__pin');
+    var cards = document.querySelectorAll('.map__card');
+    var successTemplate = document.querySelector('#success').content.querySelector('.success');
+    var successMessage = successTemplate.cloneNode(true);
+
+    document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', successMessage);
+    for (var i = 1; i < pins.length; i++) {
+      pins[i].style.display = 'none';
+    }
+    for (var j = 1; j < cards.length; j++) {
+      cards[j].style.display = 'none';
+    }
+    form.reset();
+    window.map.mapPinMain.style.left = '570px';
+    window.map.mapPinMain.style.top = '375px';
+    window.map.showAdressMapFaded();
+    window.map.disableElements();
+    document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', successMessage);
+    document.addEventListener('click', function () {
+      successMessage.remove();
+    });
+    document.addEventListener('keydown', function (evtKey) {
+      if (evtKey.key === window.ESCAPE_BUTTON) {
+        successMessage.remove();
+      }
+    });
+  };
+
+  var onError = function () {
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var errorMessage = errorTemplate.cloneNode(true);
+    document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', errorMessage);
+    document.addEventListener('click', function () {
+      errorMessage.remove();
+    });
+    document.addEventListener('keydown', function (evtKey) {
+      if (evtKey.key === window.ESCAPE_BUTTON) {
+        errorMessage.remove();
+      }
+    });
+  };
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.upload(new FormData(form), onSuccess, onError);
   });
 })();
