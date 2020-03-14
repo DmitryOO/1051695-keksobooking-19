@@ -20,12 +20,12 @@
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   };
   var showAdress = function () {
-    document.querySelector('#address').value = (mapPinMain.style.left.substring(0, mapPinMain.style.left.length - 2) / 1 + PIN_MAIN_CENTER_X) + ', '
-  + (mapPinMain.style.top.substring(0, mapPinMain.style.left.length - 2) / 1 + PIN_MAIN_BOTTOM_Y);
+    document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
+  + (mapPinMain.offsetTop + PIN_MAIN_BOTTOM_Y);
   };
   var showAdressMapFaded = function () {
-    document.querySelector('#address').value = (mapPinMain.style.left.substring(0, mapPinMain.style.left.length - 2) / 1 + PIN_MAIN_CENTER_X) + ', '
-  + (mapPinMain.style.top.substring(0, mapPinMain.style.left.length - 2) / 1 + PIN_MAIN_CENTER_Y);
+    document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
+  + (mapPinMain.offsetTop + PIN_MAIN_CENTER_Y);
   };
   var disableElements = function () {
     for (var i = 0; i < adFormFieldsets.length; i++) {
