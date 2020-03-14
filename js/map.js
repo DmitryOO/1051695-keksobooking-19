@@ -9,7 +9,6 @@
   var mapPinMain = document.querySelector('.map__pin--main');
 
   var makeAvailable = function () {
-    window.addPins();
     for (var i = 0; i < adFormFieldsets.length; i++) {
       adFormFieldsets[i].removeAttribute('disabled');
     }
@@ -20,12 +19,12 @@
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   };
   var showAdress = function () {
-    document.querySelector('#address').value = (mapPinMain.style.left.substring(0, mapPinMain.style.left.length - 2) / 1 + PIN_MAIN_CENTER_X) + ', '
-  + (mapPinMain.style.top.substring(0, mapPinMain.style.left.length - 2) / 1 + PIN_MAIN_BOTTOM_Y);
+    document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
+  + (mapPinMain.offsetTop + PIN_MAIN_BOTTOM_Y);
   };
   var showAdressMapFaded = function () {
-    document.querySelector('#address').value = (mapPinMain.style.left.substring(0, mapPinMain.style.left.length - 2) / 1 + PIN_MAIN_CENTER_X) + ', '
-  + (mapPinMain.style.top.substring(0, mapPinMain.style.left.length - 2) / 1 + PIN_MAIN_CENTER_Y);
+    document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
+  + (mapPinMain.offsetTop + PIN_MAIN_CENTER_Y);
   };
   var disableElements = function () {
     for (var i = 0; i < adFormFieldsets.length; i++) {
@@ -41,16 +40,24 @@
   disableElements();
   showAdressMapFaded();
 
+  var init = function () {
+    window.load(function () {
+      window.addPins();
+    });
+  };
+
   mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === window.LEFT_MOUSE_BUTTON && document.querySelector('.map--faded') !== null) {
+    if (evt.button === window.constants.LEFT_MOUSE_BUTTON && document.querySelector('.map--faded') !== null) {
       showAdress();
       makeAvailable();
+      init();
     }
   });
   mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === window.ENTER_BUTTON && document.querySelector('.map--faded') !== null) {
+    if (evt.key === window.constants.ENTER_BUTTON && document.querySelector('.map--faded') !== null) {
       showAdress();
       makeAvailable();
+      init();
     }
   });
   var createCards = function () {
@@ -74,7 +81,7 @@
       mapCards[cardNumber].style.display = 'none';
     });
     document.addEventListener('keydown', function (evt) {
-      if (evt.key === window.ESCAPE_BUTTON) {
+      if (evt.key === window.constants.ESCAPE_BUTTON) {
         mapCards[cardNumber].style.display = 'none';
       }
     });
@@ -92,6 +99,8 @@
   });
   window.map = {
     mapPinMain: mapPinMain,
-    showAdress: showAdress
+    showAdress: showAdress,
+    disableElements: disableElements,
+    showAdressMapFaded: showAdressMapFaded
   };
 })();

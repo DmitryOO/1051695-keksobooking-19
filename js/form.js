@@ -8,6 +8,7 @@
   var timein = document.querySelector('#timein');
   var timeout = document.querySelector('#timeout');
   var submitButton = document.querySelector('.ad-form__submit');
+  var form = document.querySelector('.ad-form');
 
   var validateRoomAndCapacity = function () {
     var roomNumberVal = parseInt(roomNumber.value, 10);
@@ -67,9 +68,83 @@
     validateTypeAndPrice();
   });
   submitButton.addEventListener('keydown', function (evt) {
-    if (evt.key === window.ENTER_BUTTON) {
+    if (evt.key === window.constants.ENTER_BUTTON) {
       validateRoomAndCapacity();
       validateTypeAndPrice();
     }
+  });
+
+  var resetMapAndForm = function () {
+    var pins = document.querySelectorAll('.map__pin');
+    var cards = document.querySelectorAll('.map__card');
+    for (var i = 1; i < pins.length; i++) {
+      pins[i].remove();
+    }
+    for (var j = 1; j < cards.length; j++) {
+      cards[j].remove();
+    }
+    form.reset();
+    form.classList.add('ad-form--disabled');
+    document.querySelector('.map').classList.add('map--faded');
+    window.map.mapPinMain.style.left = '570px';
+    window.map.mapPinMain.style.top = '375px';
+    window.map.showAdressMapFaded();
+    window.map.disableElements();
+  };
+
+  var onSuccess = function () {
+    var successTemplate = document.querySelector('#success').content.querySelector('.success');
+    var successMessage = successTemplate.cloneNode(true);
+
+    resetMapAndForm();
+    document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', successMessage);
+    var hideSuccessMessage = function () {
+      successMessage.remove();
+      document.removeEventListener('click', hideSuccessMessage);
+      document.removeEventListener('keydown', hideSuccessMessageKeyDown);
+    };
+    var hideSuccessMessageKeyDown = function (evtKey) {
+      if (evtKey.key === window.constants.ESCAPE_BUTTON) {
+        hideSuccessMessage();
+      }
+    };
+    document.addEventListener('click', hideSuccessMessage);
+    document.addEventListener('keydown', hideSuccessMessageKeyDown);
+  };
+
+  var onError = function () {
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var errorMessage = errorTemplate.cloneNode(true);
+    document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', errorMessage);
+    var hideErrorMessage = function () {
+      errorMessage.remove();
+      document.removeEventListener('click', hideErrorMessage);
+      document.removeEventListener('keydown', hideErrorMessageKeyDown);
+    };
+    var hideErrorMessageKeyDown = function (evtKey) {
+      if (evtKey.key === window.constants.ESCAPE_BUTTON) {
+        hideErrorMessage();
+      }
+    };
+
+    document.addEventListener('click', hideErrorMessage);
+    document.addEventListener('keydown', hideErrorMessageKeyDown);
+  };
+
+  var removeCards = function () {
+    var cards = document.querySelectorAll('.map__card');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].remove();
+    }
+  };
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    removeCards();
+    window.upload(new FormData(form), onSuccess, onError);
+  });
+  document.querySelector('.ad-form__reset').addEventListener('click', function () {
+    removeCards();
+    resetMapAndForm();
   });
 })();
