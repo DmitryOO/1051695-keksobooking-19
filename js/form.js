@@ -68,7 +68,7 @@
     validateTypeAndPrice();
   });
   submitButton.addEventListener('keydown', function (evt) {
-    if (evt.key === window.ENTER_BUTTON) {
+    if (evt.key === window.constants.ENTER_BUTTON) {
       validateRoomAndCapacity();
       validateTypeAndPrice();
     }
@@ -104,7 +104,7 @@
       document.removeEventListener('keydown', hideSuccessMessageKeyDown);
     };
     var hideSuccessMessageKeyDown = function (evtKey) {
-      if (evtKey.key === window.ESCAPE_BUTTON) {
+      if (evtKey.key === window.constants.ESCAPE_BUTTON) {
         hideSuccessMessage();
       }
     };
@@ -122,10 +122,11 @@
       document.removeEventListener('keydown', hideErrorMessageKeyDown);
     };
     var hideErrorMessageKeyDown = function (evtKey) {
-      if (evtKey.key === window.ESCAPE_BUTTON) {
+      if (evtKey.key === window.constants.ESCAPE_BUTTON) {
         hideErrorMessage();
       }
     };
+
     document.addEventListener('click', hideErrorMessage);
     document.addEventListener('keydown', hideErrorMessageKeyDown);
   };
@@ -136,6 +137,7 @@
       cards[i].remove();
     }
   };
+
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
     removeCards();

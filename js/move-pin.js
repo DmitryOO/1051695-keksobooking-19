@@ -23,17 +23,17 @@
       window.map.showAdress();
       window.map.mapPinMain.style.top = (window.map.mapPinMain.offsetTop - shift.y) + 'px';
       window.map.mapPinMain.style.left = (window.map.mapPinMain.offsetLeft - shift.x) + 'px';
-      if (window.map.mapPinMain.offsetTop < window.MIN_LOCATION_Y && shift.y > 0) {
-        window.map.mapPinMain.style.top = window.MIN_LOCATION_Y + 'px';
+      if (window.map.mapPinMain.offsetTop < window.constants.MIN_LOCATION_Y && shift.y > 0) {
+        window.map.mapPinMain.style.top = window.constants.MIN_LOCATION_Y + 'px';
       }
-      if (window.map.mapPinMain.offsetTop > window.MAX_LOCATION_Y && shift.y < 0) {
-        window.map.mapPinMain.style.top = window.MAX_LOCATION_Y + 'px';
+      if (window.map.mapPinMain.offsetTop > window.constants.MAX_LOCATION_Y && shift.y < 0) {
+        window.map.mapPinMain.style.top = window.constants.MAX_LOCATION_Y + 'px';
       }
       if ((window.map.mapPinMain.offsetLeft + PIN_MAIN_HALF_WIDTH) < 0 && shift.x > 0) {
         window.map.mapPinMain.style.left = -PIN_MAIN_HALF_WIDTH + 'px';
       }
-      if ((window.map.mapPinMain.offsetLeft + PIN_MAIN_HALF_WIDTH) > window.MAX_LOCATION_X && shift.x < 0) {
-        window.map.mapPinMain.style.left = (window.MAX_LOCATION_X - PIN_MAIN_HALF_WIDTH) + 'px';
+      if ((window.map.mapPinMain.offsetLeft + PIN_MAIN_HALF_WIDTH) > window.constants.MAX_LOCATION_X && shift.x < 0) {
+        window.map.mapPinMain.style.left = (window.constants.MAX_LOCATION_X - PIN_MAIN_HALF_WIDTH) + 'px';
       }
     };
     var onMouseUp = function (upEvt) {

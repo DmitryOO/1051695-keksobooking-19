@@ -2,9 +2,8 @@
 
 (function () {
   var URL = 'https://js.dump.academy/keksobooking';
-
+  var SUCCESS_STATUS = 200;
   window.upload = function (data, onSuccess, onError) {
-    var SUCCESS_STATUS = 200;
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
