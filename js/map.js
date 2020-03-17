@@ -43,6 +43,40 @@
   var init = function () {
     window.load(function () {
       window.addPins();
+      var pins = Array.from(document.querySelectorAll('.map__pin'));
+      var reducePins = function (pin, i) {
+        if (i > 5) {
+          pin.style.display = 'none';
+        }
+      };
+      pins.forEach(reducePins);
+      var selectHousingType = document.querySelector('#housing-type');
+      selectHousingType.addEventListener('change', function () {
+        pins.forEach(function (pin, i) {
+          if (i > 0) {
+            pin.style.display = 'none';
+          }
+          if (selectHousingType.value === 'house' && pin.dataset.pinType === 'house') {
+            pin.style.display = 'block';
+          }
+          if (selectHousingType.value === 'flat' && pin.dataset.pinType === 'flat') {
+            pin.style.display = 'block';
+          }
+          if (selectHousingType.value === 'bungalo' && pin.dataset.pinType === 'bungalo') {
+            pin.style.display = 'block';
+          }
+          if (selectHousingType.value === 'palace' && pin.dataset.pinType === 'palace') {
+            pin.style.display = 'block';
+          }
+          if (selectHousingType.value === 'any') {
+            pin.style.display = 'block';
+          }
+          pins.forEach(reducePins);
+          document.querySelectorAll('.map__card').forEach(function (card) {
+            card.style.display = 'none';
+          });
+        });
+      });
     });
   };
 
