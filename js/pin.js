@@ -11,7 +11,6 @@
     for (var i = 0; i < window.offerList.length; i++) {
       var pin = pinTemplate.cloneNode(true);
       var pinImage = pin.querySelector('img');
-
       pin.dataset.cardId = i;
       pinImage.src = window.offerList[i].author.avatar;
       pinImage.alt = window.offerList[i].offer.title;

@@ -4,6 +4,7 @@
   var PIN_MAIN_CENTER_X = 32;
   var PIN_MAIN_CENTER_Y = 32;
   var PIN_MAIN_BOTTOM_Y = 70;
+  var MAX_PINS_SHOWN = 5;
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
   var mapFiltersSelects = document.querySelectorAll('.map__filters select');
   var mapPinMain = document.querySelector('.map__pin--main');
@@ -43,6 +44,54 @@
   var init = function () {
     window.load(function () {
       window.addPins();
+      var pins = Array.from(document.querySelectorAll('.map__pin:not(.map__pin--main)'));
+      var selectHousingType = document.querySelector('#housing-type');
+      var getVisiblePins = function () {
+        var visiblePins = [];
+        for (var i = 0; i < pins.length; i++) {
+          if (pins[i].style.display !== 'none') {
+            visiblePins.push(pins[i]);
+          }
+        }
+        return visiblePins;
+      };
+      var reducePins = function () {
+        var visiblePins = getVisiblePins();
+        var len = Math.min(MAX_PINS_SHOWN, visiblePins.length);
+        var i;
+        for (i = 0; i < visiblePins.length; i++) {
+          visiblePins[i].style.display = 'none';
+        }
+        for (i = 0; i < len; i++) {
+          visiblePins[i].style.display = 'block';
+        }
+      };
+      reducePins();
+      selectHousingType.addEventListener('change', function () {
+        pins.forEach(function (pin, i) {
+          var type = window.offerList[i].offer.type;
+          pin.style.display = 'none';
+          if (selectHousingType.value === 'house' && type === 'house') {
+            pin.style.display = 'block';
+          }
+          if (selectHousingType.value === 'flat' && type === 'flat') {
+            pin.style.display = 'block';
+          }
+          if (selectHousingType.value === 'bungalo' && type === 'bungalo') {
+            pin.style.display = 'block';
+          }
+          if (selectHousingType.value === 'palace' && type === 'palace') {
+            pin.style.display = 'block';
+          }
+          if (selectHousingType.value === 'any') {
+            pin.style.display = 'block';
+          }
+          reducePins();
+          document.querySelectorAll('.map__card').forEach(function (card) {
+            card.style.display = 'none';
+          });
+        });
+      });
     });
   };
 

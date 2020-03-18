@@ -88,6 +88,7 @@
     document.querySelector('.map').classList.add('map--faded');
     window.map.mapPinMain.style.left = '570px';
     window.map.mapPinMain.style.top = '375px';
+    window.pins = pins;
     window.map.showAdressMapFaded();
     window.map.disableElements();
   };
