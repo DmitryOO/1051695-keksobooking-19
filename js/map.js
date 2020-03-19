@@ -5,7 +5,9 @@
   var PIN_MAIN_CENTER_Y = 32;
   var PIN_MAIN_BOTTOM_Y = 70;
   var MAX_PINS_SHOWN = 5;
-  var TIME__OUT;
+  var TIME_OUT = 500;
+  var AVERAGE_PRICE_MIN = 10000;
+  var AVARAGE_PRICE_MAX = 50000;
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
   var mapFiltersSelects = document.querySelectorAll('.map__filters select');
   var mapPinMain = document.querySelector('.map__pin--main');
@@ -88,9 +90,9 @@
           if (selectionHousingType.value !== type && selectionHousingType.value !== 'any') {
             pin.style.display = 'none';
           }
-          if ((selectionHousingPrice.value === 'low' && price >= 10000)
-          || (selectionHousingPrice.value === 'high' && price < 50000)
-          || (selectionHousingPrice.value === 'middle' && (price >= 50000 || price < 10000))) {
+          if ((selectionHousingPrice.value === 'low' && price >= AVERAGE_PRICE_MIN)
+          || (selectionHousingPrice.value === 'high' && price < AVARAGE_PRICE_MAX)
+          || (selectionHousingPrice.value === 'middle' && (price >= AVARAGE_PRICE_MAX || price < AVERAGE_PRICE_MIN))) {
             pin.style.display = 'none';
           }
           if (selectionHousingRooms.value !== rooms.toString() && selectionHousingRooms.value !== 'any') {
@@ -130,7 +132,7 @@
         }
         window.setTimeout(function () {
           changeFilter();
-        }, TIME__OUT);
+        }, TIME_OUT);
       };
       reducePins();
       selectionHousingType.addEventListener('change', onFilterChange);
