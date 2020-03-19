@@ -5,6 +5,7 @@
   var PIN_MAIN_CENTER_Y = 32;
   var PIN_MAIN_BOTTOM_Y = 70;
   var MAX_PINS_SHOWN = 5;
+  var TIME__OUT;
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
   var mapFiltersSelects = document.querySelectorAll('.map__filters select');
   var mapPinMain = document.querySelector('.map__pin--main');
@@ -129,7 +130,7 @@
         }
         window.setTimeout(function () {
           changeFilter();
-        }, 500);
+        }, TIME__OUT);
       };
       reducePins();
       selectionHousingType.addEventListener('change', onFilterChange);
