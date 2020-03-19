@@ -20,8 +20,8 @@
     };
 
     card.querySelector('.popup__type').textContent = translateType(window.offerList[m].offer);
-    card.querySelector('.popup__text--capacity').innerHTML = window.offerList[m].offer.rooms + ' комнаты для ' + window.offerList[0].offer.guests + ' гостей';
-    card.querySelector('.popup__text--time').innerHTML = 'Заезд после' + window.offerList[m].offer.checkin + ', выезд до ' + window.offerList[0].offer.checkout;
+    card.querySelector('.popup__text--capacity').innerHTML = window.offerList[m].offer.rooms + ' комнаты для ' + window.offerList[m].offer.guests + ' гостей';
+    card.querySelector('.popup__text--time').innerHTML = 'Заезд после' + window.offerList[m].offer.checkin + ', выезд до ' + window.offerList[m].offer.checkout;
 
     var featuresList = card.querySelectorAll('.popup__feature');
     for (var i = 0; i < featuresList.length; i++) {

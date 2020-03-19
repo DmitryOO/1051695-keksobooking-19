@@ -18,6 +18,7 @@
     }
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+    document.querySelector('#housing-features').removeAttribute('disabled');
   };
   var showAdress = function () {
     document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
@@ -45,7 +46,16 @@
     window.load(function () {
       window.addPins();
       var pins = Array.from(document.querySelectorAll('.map__pin:not(.map__pin--main)'));
-      var selectHousingType = document.querySelector('#housing-type');
+      var selectionHousingType = document.querySelector('#housing-type');
+      var selectionHousingPrice = document.querySelector('#housing-price');
+      var selectionHousingRooms = document.querySelector('#housing-rooms');
+      var selectionHousingGuests = document.querySelector('#housing-guests');
+      var filterWifi = document.querySelector('#filter-wifi');
+      var filterDishwasher = document.querySelector('#filter-dishwasher');
+      var filterParking = document.querySelector('#filter-parking');
+      var filterWasher = document.querySelector('#filter-washer');
+      var filterConditioner = document.querySelector('#filter-conditioner');
+      var filterElevator = document.querySelector('#filter-elevator');
       var getVisiblePins = function () {
         var visiblePins = [];
         for (var i = 0; i < pins.length; i++) {
@@ -66,35 +76,74 @@
           visiblePins[i].style.display = 'block';
         }
       };
-      reducePins();
-      selectHousingType.addEventListener('change', function () {
+      var changeFilter = function () {
         pins.forEach(function (pin, i) {
           var type = window.offerList[i].offer.type;
-          pin.style.display = 'none';
-          if (selectHousingType.value === 'house' && type === 'house') {
-            pin.style.display = 'block';
+          var price = window.offerList[i].offer.price;
+          var rooms = window.offerList[i].offer.rooms;
+          var guests = window.offerList[i].offer.guests;
+          var features = window.offerList[i].offer.features;
+          pin.style.display = 'block';
+          if (selectionHousingType.value !== type && selectionHousingType.value !== 'any') {
+            pin.style.display = 'none';
           }
-          if (selectHousingType.value === 'flat' && type === 'flat') {
-            pin.style.display = 'block';
+          if ((selectionHousingPrice.value === 'low' && price >= 10000)
+          || (selectionHousingPrice.value === 'high' && price < 50000)
+          || (selectionHousingPrice.value === 'middle' && (price >= 50000 || price < 10000))) {
+            pin.style.display = 'none';
           }
-          if (selectHousingType.value === 'bungalo' && type === 'bungalo') {
-            pin.style.display = 'block';
+          if (selectionHousingRooms.value !== rooms.toString() && selectionHousingRooms.value !== 'any') {
+            pin.style.display = 'none';
           }
-          if (selectHousingType.value === 'palace' && type === 'palace') {
-            pin.style.display = 'block';
+          if (selectionHousingGuests.value !== guests.toString() && selectionHousingGuests.value !== 'any') {
+            pin.style.display = 'none';
           }
-          if (selectHousingType.value === 'any') {
-            pin.style.display = 'block';
+          if (filterWifi.checked && !features.includes('wifi')) {
+            pin.style.display = 'none';
           }
-          reducePins();
-          document.querySelectorAll('.map__card').forEach(function (card) {
-            card.style.display = 'none';
-          });
+          if (filterDishwasher.checked && !features.includes('dishwasher')) {
+            pin.style.display = 'none';
+          }
+          if (filterParking.checked && !features.includes('parking')) {
+            pin.style.display = 'none';
+          }
+          if (filterWasher.checked && !features.includes('washer')) {
+            pin.style.display = 'none';
+          }
+          if (filterElevator.checked && !features.includes('elevator')) {
+            pin.style.display = 'none';
+          }
+          if (filterConditioner.checked && !features.includes('conditioner')) {
+            pin.style.display = 'none';
+          }
         });
-      });
+        reducePins();
+        document.querySelectorAll('.map__card').forEach(function (card) {
+          card.style.display = 'none';
+        });
+      };
+      var lastTimeOut;
+      var onFilterChange = function () {
+        if (lastTimeOut) {
+          window.clearTimeout(lastTimeOut);
+        }
+        window.setTimeout(function () {
+          changeFilter();
+        }, 500);
+      };
+      reducePins();
+      selectionHousingType.addEventListener('change', onFilterChange);
+      selectionHousingPrice.addEventListener('change', onFilterChange);
+      selectionHousingRooms.addEventListener('change', onFilterChange);
+      selectionHousingGuests.addEventListener('change', onFilterChange);
+      filterWifi.addEventListener('change', onFilterChange);
+      filterDishwasher.addEventListener('change', onFilterChange);
+      filterParking.addEventListener('change', onFilterChange);
+      filterWasher.addEventListener('change', onFilterChange);
+      filterElevator.addEventListener('change', onFilterChange);
+      filterConditioner.addEventListener('change', onFilterChange);
     });
   };
-
   mapPinMain.addEventListener('mousedown', function (evt) {
     if (evt.button === window.constants.LEFT_MOUSE_BUTTON && document.querySelector('.map--faded') !== null) {
       showAdress();
