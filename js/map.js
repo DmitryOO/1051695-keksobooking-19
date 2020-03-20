@@ -1,11 +1,10 @@
 'use strict';
 
 (function () {
-  var PIN_MAIN_CENTER_X = 32;
-  var PIN_MAIN_CENTER_Y = 32;
-  var PIN_MAIN_BOTTOM_Y = 70;
+  var PIN_MAIN_CENTER_X = 30;
+  var PIN_MAIN_CENTER_Y = 25;
   var MAX_PINS_SHOWN = 5;
-  var TIME_OUT = 500;
+  var DEBOUNCE_INTERVAL = 500;
   var AVERAGE_PRICE_MIN = 10000;
   var AVARAGE_PRICE_MAX = 50000;
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
@@ -25,7 +24,7 @@
   };
   var showAdress = function () {
     document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
-  + (mapPinMain.offsetTop + PIN_MAIN_BOTTOM_Y);
+  + mapPinMain.offsetTop;
   };
   var showAdressMapFaded = function () {
     document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
@@ -130,9 +129,9 @@
         if (lastTimeOut) {
           window.clearTimeout(lastTimeOut);
         }
-        window.setTimeout(function () {
+        lastTimeOut = window.setTimeout(function () {
           changeFilter();
-        }, TIME_OUT);
+        }, DEBOUNCE_INTERVAL);
       };
       reducePins();
       selectionHousingType.addEventListener('change', onFilterChange);
@@ -196,6 +195,10 @@
     if (target.type === 'button' || target.parentNode.type === 'button') {
       var button = target.type === 'button' ? target : target.parentNode;
       cardOpen(button.dataset.cardId);
+      document.querySelectorAll('.map__pin').forEach(function (pin) {
+        pin.classList.remove('map__pin--active');
+      });
+      button.classList.add('map__pin--active');
     }
   });
   window.map = {

@@ -2,7 +2,7 @@
 
 (function () {
 
-  var MAX_LOCATION_X = 1197;
+  var MAX_LOCATION_X = 1200;
   var MAX_LOCATION_Y = 630;
   var MIN_LOCATION_Y = 130;
   var ENTER_BUTTON = 'Enter';

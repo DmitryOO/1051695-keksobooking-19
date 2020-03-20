@@ -6,7 +6,9 @@
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
       var offerList = xhr.response;
-      window.offerList = offerList;
+      window.offerList = offerList.filter(function (record) {
+        return record.offer !== null;
+      });
       window.offerList.length = offerList.length;
       onSuccess();
     });
