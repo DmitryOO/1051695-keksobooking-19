@@ -1,10 +1,12 @@
 'use strict';
 
 (function () {
-  var PIN_MAIN_CENTER_X = 32;
-  var PIN_MAIN_CENTER_Y = 32;
-  var PIN_MAIN_BOTTOM_Y = 70;
+  var PIN_MAIN_CENTER_X = 30;
+  var PIN_MAIN_CENTER_Y = 25;
   var MAX_PINS_SHOWN = 5;
+  var DEBOUNCE_INTERVAL = 500;
+  var AVERAGE_PRICE_MIN = 10000;
+  var AVARAGE_PRICE_MAX = 50000;
   var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
   var mapFiltersSelects = document.querySelectorAll('.map__filters select');
   var mapPinMain = document.querySelector('.map__pin--main');
@@ -18,10 +20,11 @@
     }
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+    document.querySelector('#housing-features').removeAttribute('disabled');
   };
   var showAdress = function () {
     document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
-  + (mapPinMain.offsetTop + PIN_MAIN_BOTTOM_Y);
+  + mapPinMain.offsetTop;
   };
   var showAdressMapFaded = function () {
     document.querySelector('#address').value = (mapPinMain.offsetLeft + PIN_MAIN_CENTER_X) + ', '
@@ -45,7 +48,16 @@
     window.load(function () {
       window.addPins();
       var pins = Array.from(document.querySelectorAll('.map__pin:not(.map__pin--main)'));
-      var selectHousingType = document.querySelector('#housing-type');
+      var selectionHousingType = document.querySelector('#housing-type');
+      var selectionHousingPrice = document.querySelector('#housing-price');
+      var selectionHousingRooms = document.querySelector('#housing-rooms');
+      var selectionHousingGuests = document.querySelector('#housing-guests');
+      var filterWifi = document.querySelector('#filter-wifi');
+      var filterDishwasher = document.querySelector('#filter-dishwasher');
+      var filterParking = document.querySelector('#filter-parking');
+      var filterWasher = document.querySelector('#filter-washer');
+      var filterConditioner = document.querySelector('#filter-conditioner');
+      var filterElevator = document.querySelector('#filter-elevator');
       var getVisiblePins = function () {
         var visiblePins = [];
         for (var i = 0; i < pins.length; i++) {
@@ -66,35 +78,74 @@
           visiblePins[i].style.display = 'block';
         }
       };
-      reducePins();
-      selectHousingType.addEventListener('change', function () {
+      var changeFilter = function () {
         pins.forEach(function (pin, i) {
           var type = window.offerList[i].offer.type;
-          pin.style.display = 'none';
-          if (selectHousingType.value === 'house' && type === 'house') {
-            pin.style.display = 'block';
+          var price = window.offerList[i].offer.price;
+          var rooms = window.offerList[i].offer.rooms;
+          var guests = window.offerList[i].offer.guests;
+          var features = window.offerList[i].offer.features;
+          pin.style.display = 'block';
+          if (selectionHousingType.value !== type && selectionHousingType.value !== 'any') {
+            pin.style.display = 'none';
           }
-          if (selectHousingType.value === 'flat' && type === 'flat') {
-            pin.style.display = 'block';
+          if ((selectionHousingPrice.value === 'low' && price >= AVERAGE_PRICE_MIN)
+          || (selectionHousingPrice.value === 'high' && price < AVARAGE_PRICE_MAX)
+          || (selectionHousingPrice.value === 'middle' && (price >= AVARAGE_PRICE_MAX || price < AVERAGE_PRICE_MIN))) {
+            pin.style.display = 'none';
           }
-          if (selectHousingType.value === 'bungalo' && type === 'bungalo') {
-            pin.style.display = 'block';
+          if (selectionHousingRooms.value !== rooms.toString() && selectionHousingRooms.value !== 'any') {
+            pin.style.display = 'none';
           }
-          if (selectHousingType.value === 'palace' && type === 'palace') {
-            pin.style.display = 'block';
+          if (selectionHousingGuests.value !== guests.toString() && selectionHousingGuests.value !== 'any') {
+            pin.style.display = 'none';
           }
-          if (selectHousingType.value === 'any') {
-            pin.style.display = 'block';
+          if (filterWifi.checked && !features.includes('wifi')) {
+            pin.style.display = 'none';
           }
-          reducePins();
-          document.querySelectorAll('.map__card').forEach(function (card) {
-            card.style.display = 'none';
-          });
+          if (filterDishwasher.checked && !features.includes('dishwasher')) {
+            pin.style.display = 'none';
+          }
+          if (filterParking.checked && !features.includes('parking')) {
+            pin.style.display = 'none';
+          }
+          if (filterWasher.checked && !features.includes('washer')) {
+            pin.style.display = 'none';
+          }
+          if (filterElevator.checked && !features.includes('elevator')) {
+            pin.style.display = 'none';
+          }
+          if (filterConditioner.checked && !features.includes('conditioner')) {
+            pin.style.display = 'none';
+          }
         });
-      });
+        reducePins();
+        document.querySelectorAll('.map__card').forEach(function (card) {
+          card.style.display = 'none';
+        });
+      };
+      var lastTimeOut;
+      var onFilterChange = function () {
+        if (lastTimeOut) {
+          window.clearTimeout(lastTimeOut);
+        }
+        lastTimeOut = window.setTimeout(function () {
+          changeFilter();
+        }, DEBOUNCE_INTERVAL);
+      };
+      reducePins();
+      selectionHousingType.addEventListener('change', onFilterChange);
+      selectionHousingPrice.addEventListener('change', onFilterChange);
+      selectionHousingRooms.addEventListener('change', onFilterChange);
+      selectionHousingGuests.addEventListener('change', onFilterChange);
+      filterWifi.addEventListener('change', onFilterChange);
+      filterDishwasher.addEventListener('change', onFilterChange);
+      filterParking.addEventListener('change', onFilterChange);
+      filterWasher.addEventListener('change', onFilterChange);
+      filterElevator.addEventListener('change', onFilterChange);
+      filterConditioner.addEventListener('change', onFilterChange);
     });
   };
-
   mapPinMain.addEventListener('mousedown', function (evt) {
     if (evt.button === window.constants.LEFT_MOUSE_BUTTON && document.querySelector('.map--faded') !== null) {
       showAdress();
@@ -126,14 +177,22 @@
     }
     mapCards[cardNumber].style.display = 'block';
     var closeButton = mapCards[cardNumber].querySelector('.popup__close');
-    closeButton.addEventListener('click', function () {
+    var onCloseButtonClick = function () {
       mapCards[cardNumber].style.display = 'none';
-    });
-    document.addEventListener('keydown', function (evt) {
+      closeButton.removeEventListener('click', onCloseButtonClick);
+      document.removeEventListener('keydown', onCardClose);
+    };
+
+    var onCardClose = function (evt) {
       if (evt.key === window.constants.ESCAPE_BUTTON) {
         mapCards[cardNumber].style.display = 'none';
+        closeButton.removeEventListener('click', onCloseButtonClick);
+        document.removeEventListener('keydown', onCardClose);
       }
-    });
+    };
+
+    closeButton.addEventListener('click', onCloseButtonClick);
+    document.addEventListener('keydown', onCardClose);
   };
 
 
@@ -144,6 +203,10 @@
     if (target.type === 'button' || target.parentNode.type === 'button') {
       var button = target.type === 'button' ? target : target.parentNode;
       cardOpen(button.dataset.cardId);
+      document.querySelectorAll('.map__pin').forEach(function (pin) {
+        pin.classList.remove('map__pin--active');
+      });
+      button.classList.add('map__pin--active');
     }
   });
   window.map = {
