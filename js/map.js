@@ -177,14 +177,22 @@
     }
     mapCards[cardNumber].style.display = 'block';
     var closeButton = mapCards[cardNumber].querySelector('.popup__close');
-    closeButton.addEventListener('click', function () {
+    var onCloseButtonClick = function () {
       mapCards[cardNumber].style.display = 'none';
-    });
-    document.addEventListener('keydown', function (evt) {
+      closeButton.removeEventListener('click', onCloseButtonClick);
+      document.removeEventListener('keydown', onCardClose);
+    };
+
+    var onCardClose = function (evt) {
       if (evt.key === window.constants.ESCAPE_BUTTON) {
         mapCards[cardNumber].style.display = 'none';
+        closeButton.removeEventListener('click', onCloseButtonClick);
+        document.removeEventListener('keydown', onCardClose);
       }
-    });
+    };
+
+    closeButton.addEventListener('click', onCloseButtonClick);
+    document.addEventListener('keydown', onCardClose);
   };
 
 

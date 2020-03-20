@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
   var load = function (onSuccess) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -9,10 +10,9 @@
       window.offerList = offerList.filter(function (record) {
         return record.offer !== null;
       });
-      window.offerList.length = offerList.length;
       onSuccess();
     });
-    xhr.open('GET', 'https://js.dump.academy/keksobooking/data');
+    xhr.open('GET', LOAD_URL);
     xhr.send();
   };
 
